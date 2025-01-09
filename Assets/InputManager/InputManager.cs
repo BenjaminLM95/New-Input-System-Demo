@@ -1,20 +1,39 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviour, GameInput.IGameplayActions
 {
-    // Update is called once per frame
-    void Update()
-    {
-        if (Keyboard.current.spaceKey.wasPressedThisFrame) 
-        {
-            Debug.Log("Space Button was pressed"); 
-        }
+    public GameInput gameInput;
 
-        if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            Debug.Log("The 'A' key was pressed");
-        }
-
+    void Start()
+    {        
+        gameInput = new GameInput();
+        gameInput.Gameplay.Enable();
+        gameInput.Gameplay.SetCallbacks(this);
     }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        { 
+            Debug.Log("Jump button is pressed!");
+            JumpEvent?.Invoke(); 
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        
+    }
+          
+
+    #region public actions
+
+    private Action JumpEvent;
+
+    #endregion
+
+  
+
 }
